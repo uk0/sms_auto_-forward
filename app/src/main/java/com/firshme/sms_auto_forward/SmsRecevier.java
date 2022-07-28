@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.telephony.SmsManager;
 import android.util.Log;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 public class SmsRecevier extends BroadcastReceiver {
-    public SmsRecevier() {
+    private String phoneNumber;
+    public SmsRecevier(String phoneNumber) {
         super();
+        this.phoneNumber = phoneNumber;
         Log.v("dimos", "SmsRecevier create");
     }
     @Override
@@ -20,8 +23,7 @@ public class SmsRecevier extends BroadcastReceiver {
         Log.i("dimos", dString+","+address);
         //阻止广播继续传递，如果该receiver比系统的级别高，
         //那么系统就不会收到短信通知了
-
-        SmsManager smsManager = SmsManager.getDefault();
+         SmsManager smsManager = SmsManager.getDefault();
         Intent intent2 = new Intent();
         intent.setAction(SendReceiver.ACTION);
         ArrayList<String> divideMessage = smsManager.divideMessage("短信来自  ： \n" +
@@ -31,7 +33,7 @@ public class SmsRecevier extends BroadcastReceiver {
         ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
         sentIntents.add(sentIntent);
         try {
-            smsManager.sendMultipartTextMessage("需要转发的手机号", null,
+            smsManager.sendMultipartTextMessage(phoneNumber, null,
                     divideMessage, sentIntents, null);
         } catch (Exception e) {
             e.printStackTrace();
