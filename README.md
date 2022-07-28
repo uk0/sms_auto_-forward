@@ -10,3 +10,7 @@
 ![](./WechatIMG27983.png)
 
 ![](./WX20220728-191927@2x.png)
+
+### release
+
+* MD5 (app-debug.apk) = c117c216cbfca44384caddf6cf11f1e7
